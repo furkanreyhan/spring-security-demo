@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/hello/**").hasRole("ADMIN")
-                        .requestMatchers("/api/hello2/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/hello2/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())
@@ -33,5 +33,9 @@ public class SecurityConfig {
                         httpSecurityHeadersConfigurer.
                         frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
         return http.build();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
